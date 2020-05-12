@@ -8,17 +8,13 @@ use App\Models\Category;
 use App\Models\Unit;
 use Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Resources\BarangResource;
 
 class BarangController extends Controller
 {
     public function index()
     {
-        $data = DB::table('t_barang')
-            ->join('t_category', 't_category.id', '=', 't_barang.category_id')
-            ->join('t_unit', 't_unit.id', '=', 't_barang.unit_id')
-            ->select('t_barang.*', 't_category.category', 't_unit.unit')
-            ->get();
+        $data = BarangResource::collection(Barang::all());
 
         if ($data) {
             $response['status'] = "sukses";
@@ -33,14 +29,7 @@ class BarangController extends Controller
 
     public function byId($id)
     {
-        $data = DB::table('t_barang')
-            ->join('t_category', 't_category.id', '=', 't_barang.category_id')
-            ->join('t_unit', 't_unit.id', '=', 't_barang.unit_id')
-            ->where('t_barang.id', $id)
-            ->select('t_barang.*', 't_category.category', 't_unit.unit')
-            ->get();
-
-
+        $data = BarangResource::collection(Barang::where('id', $id)->get());
         $response['status'] = "sukses";
         $response['data'] = $data;
         return response()->json($response);
@@ -121,14 +110,6 @@ class BarangController extends Controller
         }
     }
 
-    public function cek()
-    {
-        $data = Barang::all();
-        $response['sukses'] = "sukses";
-        $response['data'] = $data;
-        return response()->json($response);
-    }
-
     public function categoryGet()
     {
         $data = Category::all();
@@ -187,5 +168,12 @@ class BarangController extends Controller
             $response['data'] = $data;
             return response()->json($response);
         }
+    }
+    public function byCode($code)
+    {
+        $data = BarangResource::collection(Barang::where('code', $code)->get());
+        $response['status'] = 'sukses';
+        $response['data'] = $data;
+        return response()->json($response);
     }
 }

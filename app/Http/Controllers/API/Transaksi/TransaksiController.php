@@ -3,41 +3,22 @@
 namespace App\Http\Controllers\Api\Transaksi;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaksi;
-use App\Models\Transaksi_master;
-use Validator;
+use App\Http\Resources\getItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use App\Http\Resources\TransaksiResource;
+use App\Models\Barang;
+use App\Models\Transaksi;
 
 class TransaksiController extends Controller
 {
     public function index()
     {
-        $tmt = 't_master_transaksi';
-        $tb = 't_barang';
-        $tc = 't_category';
-        $tr = 't_transaksi';
-        $us = 'users';
-
-        $data = DB::table($tr)
-            ->join('t_master_transaksi', 't_master_transaksi.transaksi_code', '=', 't_transaksi.code_transaksi')
-            ->join($us, $us . '.id', '=', $tr . '.user_id')
-            ->join($tb, $tb . '.code', '=', $tmt . '.barang_code')
-            ->join($tc, $tc . '.id', '=', $tb . '.category_id')
-            ->select($tr . '.code_transaksi', $us . '.name as nama kasir', 'role', $tb . '.code', $tb . '.name as nama barang', 'category', 'price_out', 'quantity', 'total as total bayar', $tr . '.created_at as tgl')
-            ->get();
-
-        $response['status'] = "sukses";
-        $response['data'] = $data;
-        return response()->json($response);
-    }
-
-    public function ShowById($id)
-    {
-        $data = Transaksi::find($id);
+        $data = TransaksiResource::collection(Transaksi::all());
         if ($data) {
             $response['status'] = "sukses";
-            $response['data'] = $data and $data->Transaksi_master;
+            $response['data'] = $data;
             return response()->json($response);
         } else {
             $response['status'] = "sukses";
@@ -46,27 +27,19 @@ class TransaksiController extends Controller
         }
     }
 
-    public function byId(Request $request)
+    public function ShowById($id)
     {
-        $code = $request->code_barang;
-        $tmt = 't_master_transaksi';
-        $tb = 't_barang';
-        $tc = 't_category';
-        $tr = 't_transaksi';
-        $us = 'users';
-
-        // $data = DB::table($tr)
-        //     ->join('t_master_transaksi', 't_master_transaksi.transaksi_code', '=', 't_transaksi.code_transaksi')
-        //     ->join($us, $us . '.id', '=', $tr . '.user_id')
-        //     ->join($tb, $tb . '.code', '=', $tmt . '.barang_code')
-        //     ->join($tc, $tc . '.id', '=', $tb . '.category_id')
-        //     ->select($tr . '.code_transaksi', $us . '.name as nama kasir', 'role', $tb . '.code', $tb . '.name as nama barang', 'category', 'price_out', 'quantity', 'total as total all', $tr . '.created_at as tgl')
-        //     ->where($tr . '.code_transaksi', $code)
-        //     ->get();
-        $data = Transaksi::find($code);
-        $response['status'] = "sukses";
-        $response['data'] = $data;
-        return response()->json($response);
+        // $data = Transaksi::find($id);
+        $data = TransaksiResource::collection(Transaksi::where('id', $id)->get());
+        if ($data) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
     }
 
     public function store(Request $request)
@@ -88,11 +61,25 @@ class TransaksiController extends Controller
         $prn->total = $total_sub;
         $prn->save();
         $response['status'] = 'sukses';
-        $response['dataP'] = $prn;
-        $response['dataC'] = $datas;
+        $response['data'] = $prn;
+        $response['items'] = $datas;
         return response()->json($response);
     }
 
+    public function getItems($code)
+    {
+        $data = getItemResource::collection(Barang::where('code', $code)->get());
+        // dd($data);
+        if (count($data) > 0) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
+    }
     public function update()
     {
     }

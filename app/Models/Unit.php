@@ -8,4 +8,9 @@ class Unit extends Model
 {
     protected $table = 't_unit';
     protected $guarded = [];
+
+    public function barang()
+    {
+        return $this->hasMany('App\Models\Barang');
+    }
 }

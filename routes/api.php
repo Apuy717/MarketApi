@@ -14,13 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
-Route::get('cek', 'Api\Barang\BarangController@cek');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('details', 'API\UserController@details');
@@ -28,6 +23,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['prefix' => 'barang'], function () {
         Route::get('/', 'Api\Barang\BarangController@index');
         Route::get('/{id}', 'Api\Barang\BarangController@byId');
+        Route::get('/details/{code}', 'Api\Barang\BarangController@byCode');
         Route::post('/add', 'Api\Barang\BarangController@store');
         Route::post('/edit/{id}', 'Api\Barang\BarangController@update');
         Route::delete('/delete/{id}', 'Api\Barang\BarangController@delete');
@@ -40,10 +36,14 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::group(['prefix' => 'transaksi'], function () {
         Route::get('/', 'Api\Transaksi\TransaksiController@index');
-        Route::get('/show/{id}', 'Api\Transaksi\TransaksiController@ShowById');
-        Route::post('/details', 'Api\Transaksi\TransaksiController@byId');
+        Route::get('/detail/{id}', 'Api\Transaksi\TransaksiController@ShowById');
+        Route::get('/item/{code}', 'Api\Transaksi\TransaksiController@getItems');
         Route::post('/add', 'Api\Transaksi\TransaksiController@store');
         Route::post('/edit/{id}', 'Api\Transaksi\TransaksiController@update');
         Route::delete('/delete/{id}', 'Api\Transaksi\TransaksiController@delete');
+    });
+
+    Route::group(['prefix' => 'income'], function () {
+        Route::get('/', 'API\Income\IncomeController@index');
     });
 });
