@@ -49,11 +49,12 @@ class TransaksiController extends Controller
         $dataP = Transaksi::create(['code_transaksi' => $gen, 'user_id' => 1]);
         $parrent = DB::table('t_transaksi')->max('id');
         $prn = Transaksi::find($parrent);
+        $dateTime = date('d:m:Y H:i:s');
 
         $datas = [];
         foreach ($request->json()->all() as $cb) {
             $sub[] =  $cb['sub_total'];
-            $datas[] = ["transaksi_code" => $prn->code_transaksi, 'barang_code' => $cb['barang_code'], 'quantity' => $cb['quantity'], 'sub_total' => $cb['sub_total']];
+            $datas[] = ["transaksi_code" => $prn->code_transaksi, 'barang_code' => $cb['barang_code'], 'quantity' => $cb['quantity'], 'sub_total' => $cb['sub_total'], 'created_at' => $dateTime, 'updated_at' => $dateTime];
         }
         $total_sub = (array_sum($sub));
 
