@@ -17,8 +17,11 @@ class UserController extends Controller
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('nApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+            $token = $user->createToken('token-name')->plainTextToken;
+            $response['status'] = true;
+            $response['data'] = $user;
+            $response['token'] = $token;
+            return response()->json($response);
         } else {
             return response()->json(['error' => 'email dan password salah '], 401);
         }
@@ -28,7 +31,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'c_password' => 'required|same:password',
             'role' => 'required',
@@ -41,15 +44,24 @@ class UserController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('nApp')->accessToken;
         $success['name'] =  $user->name;
 
         return response()->json(['success' => $success], $this->successStatus);
     }
 
+    public function logout(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->tokens()->where('tokenable_id', $request->id)->delete();
+        $response['status'] = true;
+        $response['data'] = "Sukses Logout All Devices";
+
+        return response()->json($response);
+    }
+
     public function details()
     {
-        $user = Auth::user();
+        $user = User::all();
         return response()->json(['success' => $user], $this->successStatus);
     }
 }

@@ -46,7 +46,7 @@ class TransaksiController extends Controller
     {
         $g = '#ANS_';
         $gen = $g . '' . date('dmyhis');
-        $dataP = Transaksi::create(['code_transaksi' => $gen, 'user_id' => 1]);
+        Transaksi::create(['code_transaksi' => $gen, 'user_id' => 1]);
         $parrent = DB::table('t_transaksi')->max('id');
         $prn = Transaksi::find($parrent);
         $dateTime = date('d:m:Y H:i:s');
@@ -55,6 +55,10 @@ class TransaksiController extends Controller
         foreach ($request->json()->all() as $cb) {
             $sub[] =  $cb['sub_total'];
             $datas[] = ["transaksi_code" => $prn->code_transaksi, 'barang_code' => $cb['barang_code'], 'quantity' => $cb['quantity'], 'sub_total' => $cb['sub_total'], 'created_at' => $dateTime, 'updated_at' => $dateTime];
+            $stock =  DB::table('t_barang')->where('code', $cb['barang_code'])->select('stock')->get();
+            $stockUpdate = $stock[0]->stock - ($cb['quantity']);
+
+            DB::table('t_barang')->where('code', $cb['barang_code'])->update(['stock' => $stockUpdate]);
         }
         $total_sub = (array_sum($sub));
 

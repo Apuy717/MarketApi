@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Income;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -55,5 +56,16 @@ class IncomeController extends Controller
 
             return response()->json($response);
         }
+    }
+
+    public function getStock(Request $request)
+    {
+        $req = $request->json()->all();
+        foreach ($req as $inp) {
+            $db[] = DB::table('t_barang')
+                ->where('code', $inp['code'])->update(['stock' => $inp['stock']]);
+        }
+
+        dd($db);
     }
 }

@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('details', 'API\UserController@details');
+    Route::post('logout', 'API\UserController@logout');
 
     Route::group(['prefix' => 'barang'], function () {
         Route::get('/', 'Api\Barang\BarangController@index');
@@ -32,6 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/unit/items/add', 'Api\Barang\BarangController@storeUnit');
         Route::delete('/unit/items/delete/{id}', 'Api\Barang\BarangController@deleteUnit');
         Route::delete('/category/items/delete/{id}', 'Api\Barang\BarangController@deleteCategory');
+        Route::post('/get/stock', 'API\Income\IncomeController@getStock');
     });
 
     Route::group(['prefix' => 'transaksi'], function () {
@@ -42,7 +44,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/edit/{id}', 'Api\Transaksi\TransaksiController@update');
         Route::delete('/delete/{id}', 'Api\Transaksi\TransaksiController@delete');
     });
-
     Route::group(['prefix' => 'income'], function () {
         Route::get('/', 'API\Income\IncomeController@index');
     });
