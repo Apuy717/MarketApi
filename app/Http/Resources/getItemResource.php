@@ -16,13 +16,23 @@ class getItemResource extends JsonResource
     {
         $quantity = 1;
         $total = $this->price_out * $quantity;
-        return [
-            'barang_code' => $this->code,
-            'quantity' => $quantity,
-            'sub_total' => $total,
-            'name' => $this->name,
-            'price' => $this->price_out,
-            'unit' => $this->unit->unit
-        ];
+        if ($this->stock > 0) {
+            return [
+                'barang_code' => $this->code,
+                'quantity' => $quantity,
+                'stock' => $this->stock,
+                'sub_total' => $total,
+                'name' => $this->name,
+                'price_seller' => $this->price_seller,
+                'price_members' => $this->price_members,
+                'price' => $this->price_out,
+                'unit' => $this->unit->unit
+            ];
+        } else {
+            return [
+                'error' => $this->name . ' ' . 'barang kosong',
+
+            ];
+        }
     }
 }

@@ -9,6 +9,8 @@ use App\Models\Unit;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Resources\BarangResource;
+use App\Models\suppilerBarang;
+use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
@@ -35,12 +37,15 @@ class BarangController extends Controller
         return response()->json($response);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $idSup)
     {
+        // dd($request->suppiler_id);
         $validator = Validator::make($request->all(), [
-            'code' => 'required',
+            'code' => 'required|unique:t_barang',
             'name' => 'required',
             'price_in' => 'required',
+            'price_seller' => 'required',
+            'price_members' => 'required',
             'price_out' => 'required',
             'expired' => 'required',
             'stock' => 'required',
@@ -55,9 +60,11 @@ class BarangController extends Controller
         }
 
         $data = Barang::create($request->all());
+        $idBarang = DB::table('t_barang')->max('id');
+        $suppiler = suppilerBarang::create(['barang_id' => $idBarang, 'suppiler_id' => $idSup]);
         if ($data) {
             $response['status'] = "sukses";
-            $response['data'] = $data;
+            $response['data'] = $data and $suppiler;
             return response()->json($response);
         }
     }
@@ -65,9 +72,10 @@ class BarangController extends Controller
     public function update($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required',
             'name' => 'required',
             'price_in' => 'required',
+            'price_seller' => 'required',
+            'price_members' => 'required',
             'price_out' => 'required',
             'expired' => 'required',
             'stock' => 'required',
@@ -84,6 +92,8 @@ class BarangController extends Controller
         $data = Barang::find($id);
         $data->name = $request->name;
         $data->price_in = $request->price_in;
+        $data->price_seller = $request->price_seller;
+        $data->price_members = $request->price_members;
         $data->price_out = $request->price_out;
         $data->expired = $request->expired;
         $data->stock = $request->stock;
@@ -103,7 +113,12 @@ class BarangController extends Controller
     public function delete($id)
     {
         $data = Barang::where('id', $id)->delete();
-        if ($data) {
+        $suppiler = suppilerBarang::where('barang_id', $id)->delete();
+        if ($data and $suppiler) {
+            $response['status'] = "sukses";
+            $response['data'] = $data and $suppiler;
+            return response()->json($response);
+        } else {
             $response['status'] = "sukses";
             $response['data'] = $data;
             return response()->json($response);

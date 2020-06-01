@@ -22,4 +22,9 @@ class Barang extends Model
     {
         return $this->hasMany('App\Models\Transaksi_master', 'barang_code', 'code');
     }
+
+    public function suppilerBarang()
+    {
+        return $this->hasMany('App\Models\suppilerBarang');
+    }
 }
