@@ -27,6 +27,20 @@ class suppilerController extends Controller
 
     public function byId($id)
     {
+        $data = Suppiler::find($id);
+        if ($data) {
+            $response['status'] = 'success';
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = 'success';
+            $response['data'] = 'empty';
+            return response()->json($response);
+        }
+    }
+
+    public function detail($id)
+    {
         $data = suppilerResource::collection(Suppiler::where('id', $id)->get());
         if (count($data) > 0) {
             $response['status'] = 'success';
@@ -66,8 +80,8 @@ class suppilerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'company' => 'required|unique:suppiler',
-            'contact' => 'required|unique:suppiler',
+            'company' => 'required',
+            'contact' => 'required',
             'region' => 'required',
         ]);
 

@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/', 'Api\Transaksi\TransaksiController@index');
         Route::get('/detail/{id}', 'Api\Transaksi\TransaksiController@ShowById');
         Route::get('/item/{code}', 'Api\Transaksi\TransaksiController@getItems');
+        Route::post('/add/umumku', 'Api\Transaksi\TransaksiController@storeUmum');
         Route::post('/add/{params}', 'Api\Transaksi\TransaksiController@store');
         Route::post('/edit/{id}', 'Api\Transaksi\TransaksiController@update');
         Route::delete('/delete/{id}', 'Api\Transaksi\TransaksiController@delete');
@@ -59,6 +60,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'suppiler'], function () {
         Route::get('/', 'Api\Suppiler\suppilerController@index');
         Route::get('/{id}', 'Api\Suppiler\suppilerController@byId');
+        Route::get('/details/{id}', 'Api\Suppiler\suppilerController@detail');
         Route::post('/add', 'Api\Suppiler\suppilerController@store');
         Route::post('/edit/{id}', 'Api\Suppiler\suppilerController@update');
         Route::delete('/delete/{id}', 'Api\Suppiler\suppilerController@delete');

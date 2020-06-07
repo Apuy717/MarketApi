@@ -191,4 +191,14 @@ class BarangController extends Controller
         $response['data'] = $data;
         return response()->json($response);
     }
+
+    public function getNull()
+    {
+        dd('hello world');
+        // $data = BarangResource::collection(Barang::where('stock', 0)->get());
+        $data = Barang::where('stock', 0)->get();
+        $response['status'] = 'sukses';
+        $response['data'] = $data;
+        return response()->json($response);
+    }
 }
