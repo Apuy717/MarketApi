@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/', 'Api\Barang\BarangController@index');
         Route::get('/{id}', 'Api\Barang\BarangController@byId');
         Route::get('/details/{code}', 'Api\Barang\BarangController@byCode');
+        Route::get('/empty/stock', 'Api\Barang\BarangController@getNull');
         Route::post('/add/{idSup}', 'Api\Barang\BarangController@store');
         Route::post('/edit/{id}', 'Api\Barang\BarangController@update');
         Route::delete('/delete/{id}', 'Api\Barang\BarangController@delete');
@@ -33,13 +34,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/unit/items/add', 'Api\Barang\BarangController@storeUnit');
         Route::delete('/unit/items/delete/{id}', 'Api\Barang\BarangController@deleteUnit');
         Route::delete('/category/items/delete/{id}', 'Api\Barang\BarangController@deleteCategory');
-        Route::post('/get/stock', 'API\Income\IncomeController@getStock');
     });
 
     Route::group(['prefix' => 'transaksi'], function () {
         Route::get('/', 'Api\Transaksi\TransaksiController@index');
         Route::get('/detail/{id}', 'Api\Transaksi\TransaksiController@ShowById');
         Route::get('/item/{code}', 'Api\Transaksi\TransaksiController@getItems');
+        Route::get('/item/members/{code}', 'Api\Transaksi\TransaksiController@getItemsMembers');
+        Route::get('/item/seller/{code}', 'Api\Transaksi\TransaksiController@getItemSeller');
         Route::post('/add/umumku', 'Api\Transaksi\TransaksiController@storeUmum');
         Route::post('/add/{params}', 'Api\Transaksi\TransaksiController@store');
         Route::post('/edit/{id}', 'Api\Transaksi\TransaksiController@update');

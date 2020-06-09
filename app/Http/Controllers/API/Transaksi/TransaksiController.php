@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Transaksi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\getItemMembers;
 use App\Http\Resources\getItemResource;
+use App\Http\Resources\getItemSeller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -120,6 +122,35 @@ class TransaksiController extends Controller
             return response()->json($response);
         }
     }
+
+    public function getItemsMembers($code)
+    {
+        $data = getItemMembers::collection(Barang::where('code', $code)->get());
+        if (count($data) > 0) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
+    }
+
+    public function getItemSeller($code)
+    {
+        $data = getItemSeller::collection(Barang::where('code', $code)->get());
+        if (count($data) > 0) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
+    }
+
     public function update()
     {
     }

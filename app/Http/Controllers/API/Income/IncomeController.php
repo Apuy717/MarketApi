@@ -57,15 +57,4 @@ class IncomeController extends Controller
             return response()->json($response);
         }
     }
-
-    public function getStock(Request $request)
-    {
-        $req = $request->json()->all();
-        foreach ($req as $inp) {
-            $db[] = DB::table('t_barang')
-                ->where('code', $inp['code'])->update(['stock' => $inp['stock']]);
-        }
-
-        dd($db);
-    }
 }

@@ -194,11 +194,10 @@ class BarangController extends Controller
 
     public function getNull()
     {
-        dd('hello world');
-        // $data = BarangResource::collection(Barang::where('stock', 0)->get());
+        $data = BarangResource::collection(Barang::where('stock', 0)->get());
         $data = Barang::where('stock', 0)->get();
         $response['status'] = 'sukses';
-        $response['data'] = $data;
+        $response['data'] = count($data);
         return response()->json($response);
     }
 }

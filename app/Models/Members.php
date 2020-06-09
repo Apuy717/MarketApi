@@ -13,4 +13,9 @@ class Members extends Model
     {
         return $this->hasMany('App\Models\Payment');
     }
+
+    public function transaksi()
+    {
+        return $this->hasMany('App\Models\Transaksi');
+    }
 }
