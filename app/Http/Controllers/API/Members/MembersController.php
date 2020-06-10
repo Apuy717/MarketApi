@@ -28,7 +28,8 @@ class MembersController extends Controller
     }
     public function byId($id)
     {
-        $data = Members::find($id);
+        $data = membersDetails::collection(Members::where('id', $id)->get());
+        // $data = Members::find($id);
         if ($data) {
             $response['status'] = 'sukses';
             $response['data'] = $data;

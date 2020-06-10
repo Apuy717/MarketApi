@@ -23,7 +23,7 @@ class suppilerResource extends JsonResource
                     "name" => $brg->barang->name,
                     "price_in" => $brg->barang->price_in,
                     "price_seller" => $brg->barang->price_seller,
-                    "price_members" => $brg->barang->members,
+                    "price_members" => $brg->barang->price_members,
                     "price_out" => $brg->barang->price_out,
                     "expired" => $brg->barang->expired,
                     "stock" => $brg->barang->stock,
@@ -36,7 +36,7 @@ class suppilerResource extends JsonResource
                 ];
             }
         } else {
-            $data[] = ['empty'];
+            $data[] = ['status' => 'empty'];
         }
 
         return [
@@ -47,6 +47,7 @@ class suppilerResource extends JsonResource
             'region' => $this->region,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
+            'itemSum' => count($data),
             'item' => $data
 
         ];
