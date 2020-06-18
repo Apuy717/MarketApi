@@ -16,7 +16,7 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $data = BarangResource::collection(Barang::all());
+        $data = BarangResource::collection(Barang::where('status', 'active')->get());
 
         if ($data) {
             $response['status'] = "sukses";
@@ -112,11 +112,14 @@ class BarangController extends Controller
 
     public function delete($id)
     {
-        $data = Barang::where('id', $id)->delete();
-        $suppiler = suppilerBarang::where('barang_id', $id)->delete();
-        if ($data and $suppiler) {
+        $data = Barang::find($id);
+        $data->status = 'trash';
+        $data->save();
+        // $data = Barang::where('id', $id)->delete();
+        // $suppiler = suppilerBarang::where('barang_id', $id)->delete();
+        if ($data) {
             $response['status'] = "sukses";
-            $response['data'] = $data and $suppiler;
+            $response['data'] = $data;
             return response()->json($response);
         } else {
             $response['status'] = "sukses";
@@ -165,10 +168,11 @@ class BarangController extends Controller
 
     public function deleteUnit($id)
     {
-        $data = Unit::find($id);
-        $data->delete();
+        // $data = Unit::find($id);
+        // $data->delete();
+        $data = 'sukses';
         if ($data) {
-            $response['status'] = "sukses";
+            $response['status'] = "feature sementara disabled";
             $response['data'] = $data;
             return response()->json($response);
         }
@@ -176,10 +180,11 @@ class BarangController extends Controller
 
     public function deleteCategory($id)
     {
-        $data = Category::find($id);
-        $data->delete();
+        // $data = Category::find($id);
+        // $data->delete();
+        $data = 'sukses';
         if ($data) {
-            $response['status'] = "sukses";
+            $response['status'] = "feature sementara disabled";
             $response['data'] = $data;
             return response()->json($response);
         }

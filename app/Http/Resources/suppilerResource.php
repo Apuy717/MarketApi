@@ -15,8 +15,8 @@ class suppilerResource extends JsonResource
 
     public function toArray($request)
     {
-        if (count($this->supillerBarang) > 0) {
-            foreach ($this->supillerBarang as $brg) {
+        if (count($this->supilerBarang) > 0) {
+            foreach ($this->supilerBarang as $brg) {
                 $data[] = [
                     "id" => $brg->barang->id,
                     "code" => $brg->barang->code,

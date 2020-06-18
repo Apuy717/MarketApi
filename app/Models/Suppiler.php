@@ -9,7 +9,7 @@ class Suppiler extends Model
     protected $table = 'suppiler';
     protected $guarded = [];
 
-    public function supillerBarang()
+    public function supilerBarang()
     {
         return $this->hasMany('App\Models\suppilerBarang');
     }

@@ -13,7 +13,7 @@ class suppilerController extends Controller
 {
     public function index()
     {
-        $data = Suppiler::all();
+        $data = Suppiler::where('status', 'active')->get();
         if ($data) {
             $response['status'] = 'success';
             $response['data'] = $data;
@@ -106,11 +106,14 @@ class suppilerController extends Controller
     }
     public function delete($id)
     {
-        $data = Suppiler::where('id', $id)->delete();
-        $sup = suppilerBarang::where('suppiler_id', $id)->delete();
-        if ($data and $sup) {
+        // $data = Suppiler::where('id', $id)->delete();
+        // $sup = suppilerBarang::where('suppiler_id', $id)->delete();
+        $data = Suppiler::find($id);
+        $data->status = 'trash';
+        $data->save();
+        if ($data) {
             $response['status'] = 'sukses';
-            $response['data'] = $data and $sup;
+            $response['data'] = $data;
             return response()->json($response);
         } else {
             $response['status'] = 'sukses';

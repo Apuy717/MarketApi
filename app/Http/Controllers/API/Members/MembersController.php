@@ -14,8 +14,7 @@ class MembersController extends Controller
     public function index()
     {
 
-        $data = membersDetails::collection(Members::all());
-
+        $data = membersDetails::collection(Members::whereIn('status', ['members', 'seller'])->get());
         if ($data) {
             $response['status'] = 'sukses';
             $response['data'] = $data;
@@ -91,9 +90,12 @@ class MembersController extends Controller
     }
     public function delete($id)
     {
-        $data = Members::where('id', $id)->delete();
-        $pay = Payment::where('members_id', $id)->delete();
-        if ($data and $pay) {
+        // $data = Members::where('id', $id)->delete();
+        // $pay = Payment::where('members_id', $id)->delete();
+        $data = Members::find($id);
+        $data->status = 'trash';
+        $data->save();
+        if ($data) {
             $response['status'] = 'sukses';
             return response()->json($response);
         } else {
