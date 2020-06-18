@@ -74,7 +74,7 @@ class UserController extends Controller
             $response['data'] = $data;
             return response()->json($response);
         } else {
-            $response['status'] = 'sukses';
+            $response['error'] = 'error token is loggout';
             $response['data'] = 'empty';
             return response()->json($response);
         }
