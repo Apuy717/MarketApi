@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 class UserController extends Controller
@@ -63,5 +64,19 @@ class UserController extends Controller
     {
         $user = User::all();
         return response()->json(['success' => $user], $this->successStatus);
+    }
+
+    public function cekInLoggedIn($id)
+    {
+        $data = DB::table('personal_access_tokens')->where('tokenable_id', $id)->get();
+        if (count($data) > 0) {
+            $response['status'] = 'sukses';
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = 'sukses';
+            $response['data'] = 'empty';
+            return response()->json($response);
+        }
     }
 }

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
+Route::get('check/loggedin/{id}', 'API\UserController@cekInLoggedIn');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('details', 'API\UserController@details');
