@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/{id}', 'API\Barang\BarangController@byId');
         Route::get('/details/{code}', 'API\Barang\BarangController@byCode');
         Route::get('/empty/stock', 'API\Barang\BarangController@getNull');
+        Route::get('/recyclebin/item', 'API\Barang\BarangController@recycleBin');
         Route::post('/add/{idSup}', 'API\Barang\BarangController@store');
         Route::post('/edit/{id}', 'API\Barang\BarangController@update');
         Route::delete('/delete/{id}', 'API\Barang\BarangController@delete');
@@ -55,6 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'members'], function () {
         Route::get('/', 'API\Members\MembersController@index');
         Route::get('/detail/{id}', 'API\Members\MembersController@byId');
+        Route::get('/recyclebin/members', 'API\Members\MembersController@recycleBin');
         Route::post('/add', 'API\Members\MembersController@store');
         Route::post('/edit/{id}', 'API\Members\MembersController@update');
         Route::delete('/delete/{id}', 'API\Members\MembersController@delete');
@@ -62,6 +64,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['prefix' => 'suppiler'], function () {
         Route::get('/', 'API\Suppiler\suppilerController@index');
+        Route::get('/recyclebin/suppiler', 'API\Suppiler\suppilerController@recycleBin');
         Route::get('/{id}', 'API\Suppiler\suppilerController@byId');
         Route::get('/details/{id}', 'API\Suppiler\suppilerController@detail');
         Route::post('/add', 'API\Suppiler\suppilerController@store');

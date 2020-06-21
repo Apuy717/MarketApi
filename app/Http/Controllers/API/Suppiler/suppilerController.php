@@ -121,4 +121,18 @@ class suppilerController extends Controller
             return response()->json($response);
         }
     }
+
+    public function recycleBin()
+    {
+        $data = suppilerResource::collection(Suppiler::where('status', 'trash')->get());
+        if ($data) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
+    }
 }

@@ -103,4 +103,18 @@ class MembersController extends Controller
             return response()->json($response);
         }
     }
+
+    public function recycleBin()
+    {
+        $data = membersDetails::collection(Members::where('status', 'trash')->get());
+        if ($data) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
+    }
 }

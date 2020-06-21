@@ -45,6 +45,7 @@ class suppilerResource extends JsonResource
             'company' => $this->company,
             'contact' => $this->contact,
             'region' => $this->region,
+            'status' => $this->status,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
             'itemSum' => count($data),
