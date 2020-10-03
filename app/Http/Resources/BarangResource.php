@@ -19,7 +19,8 @@ class BarangResource extends JsonResource
             foreach ($this->suppilerBarang as $dts) {
                 // $dataSup[] = $dts->suppiler->company;
                 $dataSup[] = ['ceo' => $dts->suppiler->name, 'company' => $dts->suppiler->company];
-            } else {
+            }
+        else {
             $dataSup[] = ['empty'];
         }
         return [

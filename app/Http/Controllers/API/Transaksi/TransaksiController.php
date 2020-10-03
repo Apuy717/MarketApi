@@ -13,6 +13,7 @@ use App\Http\Resources\TransaksiResource;
 use App\Models\Barang;
 use App\Models\Payment;
 use App\Models\Transaksi;
+use App\Models\Transaksi_master;
 
 class TransaksiController extends Controller
 {
@@ -20,6 +21,30 @@ class TransaksiController extends Controller
     {
         $data = TransaksiResource::collection(Transaksi::all());
         if ($data) {
+            $response['status'] = "sukses";
+            $response['data'] = $data;
+            return response()->json($response);
+        } else {
+            $response['status'] = "sukses";
+            $response['data'] = "empty";
+            return response()->json($response);
+        }
+    }
+
+    public function getByDay()
+    {
+        $date1 = date('Y:m:d');
+        $date2 = date('Y:m:d');
+        // dd($date1);
+
+        $start_date = $date1 . '00:00:00';
+        $end_date = $date2 . ' 23:59:00';
+        // dd($end_date);
+        // $tg = '21:07:2020 21:50:29';
+
+        $data = TransaksiResource::collection(Transaksi::whereBetween('created_at', [$start_date, $end_date])->get());
+
+        if (count($data)) {
             $response['status'] = "sukses";
             $response['data'] = $data;
             return response()->json($response);

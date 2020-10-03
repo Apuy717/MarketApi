@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['prefix' => 'transaksi'], function () {
         Route::get('/', 'API\Transaksi\TransaksiController@index');
+        Route::get('/day/live', 'API\Transaksi\TransaksiController@getByDay');
         Route::get('/detail/{id}', 'API\Transaksi\TransaksiController@ShowById');
         Route::get('/item/{code}', 'API\Transaksi\TransaksiController@getItems');
         Route::get('/item/members/{code}', 'API\Transaksi\TransaksiController@getItemsMembers');
